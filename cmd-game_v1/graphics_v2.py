@@ -11,6 +11,7 @@ except ModuleNotFoundError:
     with the command 'pip install <module name>'")
     print("Possible missing modules:")
     print(module for module in modules)
+    raise
     
 
 
