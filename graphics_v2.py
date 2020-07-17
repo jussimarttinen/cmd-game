@@ -64,15 +64,20 @@ class Display():
         """
         
         # splits the picture into a list
-        picture = [Colours.BG_COLS[colour] + line + Colours.BG_COLS["reset"] for line in picture.split("\n")] 
+        picture = [Colours.BG_COLS[colour] + line + Colours.BG_COLS["reset"] for line in picture.split("\n")]
+        # fixes a bug where the picture is taller than the frame
+        # (removes the last item if the string ended in "\n")
+        if picture[-1] == Colours.BG_COLS[colour] + Colours.BG_COLS["reset"]:
+            picture.pop(-1)
 
         # calculates the longest line in the picture
         # needed when printing whitespace around it
-        picture_length = max(len(line) for line in picture)
+        # removes the length of the colour codes because this caused a bug
+        picture_length = max(len(line) for line in picture) - len(Colours.BG_COLS[colour] + Colours.BG_COLS["reset"])
         # the minimum whitespace that any line has around it
 
         # prints the horizontal empty rows
-        print(y*"\n")
+        print(y*"\n", end="")
 
         # prints rest of picture
         for line in picture:
@@ -83,60 +88,6 @@ class Display():
             print(line)
 
         # prints the whitespace under the picture
-        print((self.w_height - len(picture) - y) * "\n")
+        print((self.w_height - len(picture) - y) * "\n", end="")
 
 
-
-if __name__ == "__main__":
-    
-    # creates the display
-    display = Display()
-
-    dvd_logo = "\
-    `:::::::::::::`      ,,,,,,,,,-     \n\
-    VQQBBB@@@@@@@@g    ~Q@@BQQQQB@@@gi  \n\
-   :888?   r@@@##@@| `K@@0V888!   r@@@V \n\
-   b@@#`  'w@@@w~@@#n#@Q^ Q@@B   -o@@@^ \n\
-  ,@@@#%EB@#0z!  n@@@#i  ^@@@#6RB@@Qz_  \n\
-  _^^^<~:_`       R#]`   ,<<<<<>=-      \n\
-    -=^rv}nzwhmPUwpHXPPmhwzn}i?^=_      \n\
- =8@@@@@@@@@@#i_     `=K@@@@@@@@@@@B*   \n\
-   _~rxczhGZdED$$E6OD0$DE6ZSatnxr~*'    \n\
-     x``v  r' _v>*`  l^~_  !r^?.        \n\
-     :6W,  d= ^Z,wn `@zx: -8!,sn        \n\
-      .`   '  `__`   ___`   _\"`         "
-
-
-    # picture colour
-    COLOUR = "green"
-    # picture
-    PICTURE = dvd_logo
-    # starting coordinates
-    X_CORD = 1
-    Y_CORD = 1
-    # how much the picture moves
-    dx = 1
-    dy = 1
-
-    display.update_dimensions()
-    sleep(1/2)
-    
-    frame = 0
-
-    while True:
-        sleep(1/10)
-        display.update_dimensions()
-        display.display_picture(PICTURE, colour=COLOUR, x=X_CORD, y=Y_CORD)
-        if frame % 1 == 0:
-            X_CORD += dx
-            Y_CORD += dy
-
-            # picture is touching left/right edge
-            if X_CORD + max(len(line) for line in PICTURE.split("\n")) > display.w_width - 1 or X_CORD < 1:
-                dx *= -1
-            
-            # picture is touching bottom/top edge
-            if Y_CORD + len(PICTURE.split("\n")) > display.w_height - 1 or Y_CORD < 2:
-                dy *= -1
-        frame += 1
-    

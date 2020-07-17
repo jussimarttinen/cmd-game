@@ -15,6 +15,7 @@ class Player:
 
         # initialises the player characters visuals
         self.change_symbol(symbol, colour)
+        self.update_position(0,0)
     
     def update_position(self, dx, dy):
         self.x += dx
@@ -25,6 +26,7 @@ class Player:
         # character has moven to the left
         elif dx < 0:
             self.turn_character("left")
+        self.data = (self.symbol, self.x, self.y)
 
     def change_symbol(self, new_symbol, colour="white", ovrwrte_plr_smbl=False):
         """Changes the player symbol to another one

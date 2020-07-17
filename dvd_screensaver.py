@@ -116,8 +116,8 @@ _~rxczhGZdED$$E6OD0$DE6ZSatnxr~*'    \n\
     X_CORD = 1
     Y_CORD = 1
     # how much the picture moves
-    DX = 2
-    DY = 2
+    DX = 1
+    DY = 1
     # how many frames are drawn per second
     FPS = 60
     # for how many frames the same picture is repeated

@@ -2,6 +2,9 @@ import msvcrt
 import graphics_v2 as graphics
 from time import sleep
 import Player
+import Frame
+import Entities
+from random import randint
 
 class Game():
     
@@ -11,6 +14,10 @@ class Game():
         starting_x = self.display.w_width // 2
         starting_y = self.display.w_height // 2
 
+        self.frame = Frame.Frame(self.display.w_width, self.display.w_height)
+        
+        self.fps = 60
+
         # list of available skins
         self.player_skins = ["@", "O", "*", "¤"]
         # index of the current player skin
@@ -18,6 +25,11 @@ class Game():
         self.player_weapons = [[">", "<"], ["~;", ";~"]]
         # creates the player
         self.player = Player.Player(starting_x, starting_y, self.player_skins[self.player_skin_index], weapon_sprites=self.player_weapons[1])
+        # creates an instance of tree
+        # broken for some reason
+        self.tree = Entities.Tree(randint(0,self.display.w_width - 1), randint(0,self.display.w_height - 1))
+        
+        
 
         # msvcrt symbols for the arrow keys
         self.arrows = {"K": (-1, 0), "M": (1, 0), "H": (0, -1), "P": (0, 1)}
@@ -42,10 +54,15 @@ class Game():
     def main_loop(self):
         running = True
         while running:
-            sleep(1/15)
-            self.display.display_picture(self.player.symbol, colour=self.player.colour, x=self.player.x, y=self.player.y)
+            frame = self.frame.compose_frame(player = self.player.data, tree = self.tree.data)
+            self.display.display_picture(frame, colour=self.player.colour)
+            self.frame.update_dimensions(self.display.w_width, self.display.w_height)
             print("")
             self.display.update_dimensions()
+            # stabilises animation
+            sleep(1/self.fps)
+            self.display.clear_screen(3*self.display.w_height)
+
             self.get_player_input()
             
 
