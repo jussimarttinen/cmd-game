@@ -13,7 +13,7 @@ except ModuleNotFoundError:
     raise
     
 # NOTE: This program was a quick reassembly of my other, more generalised cmd animation tool,
-# so there are a few unnecesary methods that I'm too lazy to remove
+# so there are a few unnecessary methods that I'm too lazy to remove
 
 
 

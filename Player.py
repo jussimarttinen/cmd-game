@@ -1,20 +1,18 @@
-class Player:
+from Entities import Entity
 
-    def __init__(self, x, y, symbol, colour="white", weapon_sprites=["", ""]):
+class Player(Entity):
+
+    def __init__(self, x, y, sprite, colour="white", weapon_sprites=["", ""]):
         # Location of player character
-        self.x = x
-        self.y = y
-        # the player symbol for reference
-        # this one should ONLY be changed if e.g. player skin changes 
-        self._player_symbol = symbol
+        super().__init__(x, y, sprite, colour)
         self._weapon_sprites = weapon_sprites
         # how the player looks when holding a gun
         self.weapon_sprites = [
-        weapon_sprites[0] + self._player_symbol, 
-        self._player_symbol + weapon_sprites[1]]
+        weapon_sprites[0] + self.sprite, 
+        self.sprite + weapon_sprites[1]]
+        self._default_sprite = self.sprite
 
         # initialises the player characters visuals
-        self.change_symbol(symbol, colour)
         self.update_position(0,0)
     
     def update_position(self, dx, dy):
@@ -26,18 +24,17 @@ class Player:
         # character has moven to the left
         elif dx < 0:
             self.turn_character("left")
-        self.data = (self.symbol, self.x, self.y)
 
     def change_symbol(self, new_symbol, colour="white", ovrwrte_plr_smbl=False):
         """Changes the player symbol to another one
         If ovrwrte_plr_symbol is True, the reference player symbol will be changed."""
         if ovrwrte_plr_smbl:
-            self._player_symbol = new_symbol
-        self.symbol = new_symbol
+            self._default_sprite = new_symbol
+        self.sprite = new_symbol
         self.colour = colour
         self.weapon_sprites = [
-        self._weapon_sprites[0] + self._player_symbol, 
-        self._player_symbol + self._weapon_sprites[1]]
+        self._weapon_sprites[0] + self._default_sprite, 
+        self._default_sprite + self._weapon_sprites[1]]
     
     def turn_character(self, direction):
         """'Turns' the character symbol to the chosen direction"""

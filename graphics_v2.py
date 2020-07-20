@@ -1,17 +1,7 @@
 from shutil import get_terminal_size
 from time import sleep
 import Colours
-from math import ceil
-
-modules = ["colorama"]
-try: 
-    from colorama import Style, Fore, init
-except ModuleNotFoundError:
-    print("It seems like you haven't installed a module yet. Please install the necessary modules \
-    with the command 'pip install <module name>'")
-    print("Possible missing modules:")
-    print(module for module in modules)
-    raise
+from colorama import Style, Fore, init
     
 
 
@@ -21,7 +11,7 @@ class Display():
 
     def __init__(self):
         # Initialises Colorama (required for colour support)
-        init()
+        init(autoreset=True)
         # terminal dimensions in characters
         self.w_width, self.w_height = get_terminal_size()
         # scales the dimensions to even numbers to make drawing easier
@@ -59,8 +49,7 @@ class Display():
         """Displays the given picture
         Optional parameter colour determines the text colour
 
-        x and y are the coordinates of the top left corner of the picture 
-        (defaults to top left)
+        x and y are the coordinates from the top left corner of the picture
         """
         
         # splits the picture into a list
